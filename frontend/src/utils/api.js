@@ -25,8 +25,11 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access
-      window.location.href = '/login';
+      // Prevent redirect loop if already on auth pages
+      const authPaths = ['/login', '/register'];
+      if (typeof window !== 'undefined' && !authPaths.includes(window.location.pathname)) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
