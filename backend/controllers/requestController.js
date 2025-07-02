@@ -4,37 +4,7 @@ import AuditLog from '../models/AuditLog.js';
 import User from '../models/User.js';
 import Item from '../models/Item.js';
 
-const checkItemAvailability = async (itemId, startTime, endTime) => {
-  const item = await Item.findById(itemId);
-  if (!item.availability) return false;
-
-  // Check for overlapping requests
-  const overlappingRequests = await Request.find({
-    item: itemId,
-    status: { $in: ['pending', 'approved'] },
-    $or: [
-      { startTime: { $lt: endTime }, endTime: { $gt: startTime } },
-      { startTime: { $gte: startTime, $lt: endTime } }
-    ]
-  });
-
-  return overlappingRequests.length === 0;
-};
-
-export const createRequest = async (req, res) => {
-  const { item, startTime, endTime, reason } = req.body;
-
-  try {
-    // Validate input
-    if (!item || !startTime || !endTime) {
-      return res.status(400).json({ message: 'Missing required fields' });
-    }
-    if (new Date(startTime) >= new Date(endTime)) {
-      return res.status(400).json({ message: 'End time must be after start time' });
-    }
-
-    // Check item availability
-    const checkItemAvailability = async (itemId, startTime, endTime, quantity = 1) => {
+const checkItemAvailability = async (itemId, startTime, endTime, quantity = 1) => {
   const item = await Item.findById(itemId);
   if (!item || !item.availability) return false;
 
@@ -54,6 +24,24 @@ export const createRequest = async (req, res) => {
 
   return overlappingRequests.length === 0;
 };
+
+export const createRequest = async (req, res) => {
+  const { item, startTime, endTime, reason } = req.body;
+
+  try {
+    // Validate input
+    if (!item || !startTime || !endTime) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+    if (new Date(startTime) >= new Date(endTime)) {
+      return res.status(400).json({ message: 'End time must be after start time' });
+    }
+
+    // Check item availability
+    const available = await checkItemAvailability(item, startTime, endTime);
+    if (!available) {
+      return res.status(400).json({ message: 'Item is not available for the selected time' });
+    }
 
     const newRequest = await Request.create({
       item,
