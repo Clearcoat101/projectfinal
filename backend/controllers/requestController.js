@@ -4,14 +4,20 @@ import AuditLog from '../models/AuditLog.js';
 import User from '../models/User.js';
 import Item from '../models/Item.js';
 
-// Determine if an item is available for the requested time/quantity
+
 const checkItemAvailability = async (itemId, startTime, endTime, quantity = 1) => {
   const item = await Item.findById(itemId);
   if (!item || !item.availability) return false;
 
+
+
+
+
   if (item.category === 'consumable') {
     return item.stockLevel >= quantity;
   }
+
+
 
   const overlappingRequests = await Request.find({
     item: itemId,
@@ -39,7 +45,9 @@ export const createRequest = async (req, res) => {
     // Check item availability
     const available = await checkItemAvailability(item, startTime, endTime);
     if (!available) {
+
       return res.status(400).json({ message: 'Item not available for the selected time' });
+
     }
 
     const newRequest = await Request.create({
