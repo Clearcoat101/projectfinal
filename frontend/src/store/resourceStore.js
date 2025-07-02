@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import api from '../utils/api';
 
-export const useResourceStore = create((set, get) => ({
+export const useResourceStore = create((set) => ({
   resources: [],
   loading: false,
   error: null,

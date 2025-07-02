@@ -29,7 +29,7 @@ import { formatDateTime } from '../utils/dateHelpers';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuthStore();
-  const { requests, fetchRequests, loading } = useRequestStore();
+  const { requests, fetchRequests } = useRequestStore();
 
   useEffect(() => {
     fetchRequests();

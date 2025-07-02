@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import api from '../utils/api';
 
-export const useRequestStore = create((set, get) => ({
+export const useRequestStore = create((set) => ({
   requests: [],
   currentRequest: null,
   loading: false,

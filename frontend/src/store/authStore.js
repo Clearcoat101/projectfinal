@@ -53,23 +53,23 @@ export const useAuthStore = create((set, get) => ({
     try {
       const response = await api.get('/auth/me');
       set({ user: response.data, loading: false });
-    } catch (error) {
+    } catch {
       set({ user: null, loading: false });
+    }
+  },
+
+  updateProfile: async (updateData) => {
+    try {
+      set({ loading: true, error: null });
+      const response = await api.put('/users/me', updateData);
+      set({ user: { ...get().user, ...response.data }, loading: false });
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Profile update failed';
+      set({ error: message, loading: false });
+      return { success: false, error: message };
     }
   },
 
   clearError: () => set({ error: null })
 }));
-
-updateProfile: async (updateData) => {
-  try {
-    set({ loading: true, error: null });
-    const response = await api.put('/users/me', updateData);
-    set({ user: { ...get().user, ...response.data }, loading: false });
-    return { success: true };
-  } catch (error) {
-    const message = error.response?.data?.message || 'Profile update failed';
-    set({ error: message, loading: false });
-    return { success: false, error: message };
-  }
-}

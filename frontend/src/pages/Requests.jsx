@@ -22,20 +22,16 @@ import {
 } from '@mui/material';
 import {
   Add as AddIcon,
-  Visibility as ViewIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon
+  Visibility as ViewIcon
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useRequestStore } from '../store/requestStore';
-import { useAuthStore } from '../store/authStore';
 import { formatDateTime } from '../utils/dateHelpers';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 import ErrorAlert from '../components/Common/ErrorAlert';
 
 const Requests = () => {
   const navigate = useNavigate();
-  const { user } = useAuthStore();
   const { requests, fetchRequests, loading, error, clearError } = useRequestStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
