@@ -31,7 +31,6 @@ const CreateRequest = () => {
     endTime: '',
     reason: ''
   });
-  const [availabilityCheck, setAvailabilityCheck] = useState(null);
 
   useEffect(() => {
     fetchResources();

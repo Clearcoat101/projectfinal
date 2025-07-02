@@ -1,4 +1,3 @@
-// backend/middleware/sanitize.js
 export const mongoSanitize = (req, res, next) => {
   const sanitize = obj => {
     if (typeof obj !== 'object' || obj === null) return;

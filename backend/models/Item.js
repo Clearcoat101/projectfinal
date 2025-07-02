@@ -1,4 +1,3 @@
-// 1. Update models/Item.js to better handle resource types
 import mongoose from 'mongoose';
 
 const itemSchema = new mongoose.Schema(
