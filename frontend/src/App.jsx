@@ -5,6 +5,7 @@ import { useAuthStore } from './store/authStore';
 import Navbar from './components/Layout/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Requests from './pages/Requests';
 import RequestDetail from './pages/RequestDetail';
@@ -29,6 +30,7 @@ function App() {
   if (!user) {
     return (
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
